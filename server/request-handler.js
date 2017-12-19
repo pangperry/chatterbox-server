@@ -15,13 +15,7 @@ var utils = require('./http-helpers.js');
 // var http = require('http');
 var url = require('url');
 var path = require('path');
-var results = [
-// {
-//   username: 'tester', //'app.username',
-//   text: 'testing', // app.$message.val(),
-//   roomname: 'lobby' //app.roomname || 
-// }
-];
+var results = [];
 
 // var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
