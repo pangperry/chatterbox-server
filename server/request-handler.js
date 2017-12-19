@@ -15,11 +15,13 @@ var utils = require('./http-helpers.js');
 // var http = require('http');
 var url = require('url');
 var path = require('path');
-var data = [{
-  username: 'tester', //'app.username',
-  text: 'testing', // app.$message.val(),
-  roomname: 'lobby' //app.roomname || 
-}];
+var results = [
+// {
+//   username: 'tester', //'app.username',
+//   text: 'testing', // app.$message.val(),
+//   roomname: 'lobby' //app.roomname || 
+// }
+];
 
 // var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
@@ -29,7 +31,6 @@ var actions = {
     // http.get(req.url, (res) => {
     var parsedUrl = url.parse(req.url);
     var endPoint = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
-    // console.log(endPoint);
     /* if your router needs to pattern-match endpoints
     */
     /*
@@ -37,18 +38,27 @@ var actions = {
      * pass the result of that operation as data into responder -> store result status code as `statusCode`
      * pass the status code into responder
     */
+    var data = {'results': results};
+    
     endPoint === '/classes/messages' ? utils.respond(res, data) : utils.send404(res);
     // });
   },
 
   'POST': function(req, res) {
     utils.prepareResponse(req, function(data) {
+      var parsedUrl = url.parse(req.url);
+      var endPoint = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
+      if (endPoint === '/classes/messages') {
+        results.push(JSON.parse(data));
+        utils.respond(res, results, 201);
+      } else {
+        utils.send404(res);
+      }
       // Do something with the data that was just collected by the helper
       // e.g., validate and save to db
       // either redirect or respond
         // should be based on result of the operation performed in response to the POST request intent
         // e.g., if user wants to save, and save fails, throw error
-      utils.redirector(res /* redirect path , optional status code -  defaults to 302 */);  
     });
   }
 };
@@ -108,7 +118,7 @@ var actions = {
   // IY comment: apparently it's convention to overwrite module.exports if only exporting one thing (fn, obj, etc.) but if there are more things, module.exports is an obj w key-value pairs
 
 
-module.exports = function(req, res) {
+module.exports.requestHandler = function(req, res) {
   var action = actions[req.method];
   action ? action(req, res) : utils.send404(res);
 };
