@@ -16,17 +16,21 @@ var utils = require('./http-helpers.js');
 var url = require('url');
 var path = require('path');
 var results = [
-  { username: 'Us', text: 'we are here', roomname: 'main ' }
+  
 ];
 
 // var requestHandler = function(request, response) {
   // Request and Response come from node's http module.
   
 var actions = {
+  'OPTIONS': function(req, res) {
+    utils.respond(res);
+  },
   'GET': function(req, res) {
     // http.get(req.url, (res) => {
     var parsedUrl = url.parse(req.url);
     var endPoint = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
+    
     /* if your router needs to pattern-match endpoints
     */
     /*
