@@ -42,7 +42,6 @@ var app = {
     $.ajax({
       url: app.server,
       type: 'POST',
-      // contentType: 'text/plain',
       data: JSON.stringify(message),
       success: function (data) {
         // Clear messages input
@@ -66,7 +65,7 @@ var app = {
       success: function(data) {
         // Don't bother if we have nothing to work with
         if (!data.results || !data.results.length) { 
-          app.stopSpinner();
+          app.stopSpinner(); 
           return; 
         }
 

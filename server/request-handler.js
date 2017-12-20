@@ -12,11 +12,9 @@ this file and include it in basic-server.js so that it actually works.
 
 **************************************************************/
 var utils = require('./http-helpers.js');
-// var http = require('http');
 var url = require('url');
 var path = require('path');
 var results = [
-  
 ];
 
 // var requestHandler = function(request, response) {
@@ -26,6 +24,7 @@ var actions = {
   'OPTIONS': function(req, res) {
     utils.respond(res);
   },
+  
   'GET': function(req, res) {
     // http.get(req.url, (res) => {
     var parsedUrl = url.parse(req.url);
@@ -39,7 +38,6 @@ var actions = {
      * pass the status code into responder
     */
     var data = {'results': results};
-    
     endPoint === '/classes/messages' ? utils.respond(res, data) : utils.send404(res);
     // });
   },
@@ -49,6 +47,7 @@ var actions = {
       var parsedUrl = url.parse(req.url);
       var endPoint = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
       if (endPoint === '/classes/messages') {
+        console.log('our data: ' + data);
         results.push(JSON.parse(data));
         utils.respond(res, results, 201);
       } else {
