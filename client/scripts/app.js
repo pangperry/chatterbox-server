@@ -69,8 +69,6 @@ var app = {
           return; 
         }
   
-        app.stopSpinner(); 
-     
 
         // Store messages for caching later
         app.messages = data.results;

@@ -16,9 +16,6 @@ var url = require('url');
 var path = require('path');
 var results = [
 ];
-
-// var requestHandler = function(request, response) {
-  // Request and Response come from node's http module.
   
 var actions = {
   'OPTIONS': function(req, res) {
@@ -26,20 +23,10 @@ var actions = {
   },
   
   'GET': function(req, res) {
-    // http.get(req.url, (res) => {
     var parsedUrl = url.parse(req.url);
     var endPoint = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
-    
-    /* if your router needs to pattern-match endpoints
-    */
-    /*
-     * DO SOMETHING - get asset, query database, etc. -> store as `data`
-     * pass the result of that operation as data into responder -> store result status code as `statusCode`
-     * pass the status code into responder
-    */
     var data = {'results': results};
     endPoint === '/classes/messages' ? utils.respond(res, data) : utils.send404(res);
-    // });
   },
 
   'POST': function(req, res) {
@@ -53,13 +40,13 @@ var actions = {
       } else {
         utils.send404(res);
       }
-      // Do something with the data that was just collected by the helper
-      // e.g., validate and save to db
-      // either redirect or respond
-        // should be based on result of the operation performed in response to the POST request intent
-        // e.g., if user wants to save, and save fails, throw error
     });
   }
+};
+
+module.exports.requestHandler = function(req, res) {
+  var action = actions[req.method];
+  action ? action(req, res) : utils.send404(res);
 };
 //
   // They include information about both the incoming request, such as
@@ -112,12 +99,5 @@ var actions = {
 // Another way to get around this restriction is to serve you chat
 // client from this domain by setting up static file serving.
 
-
 // module.exports = requestHandler;
   // IY comment: apparently it's convention to overwrite module.exports if only exporting one thing (fn, obj, etc.) but if there are more things, module.exports is an obj w key-value pairs
-
-
-module.exports.requestHandler = function(req, res) {
-  var action = actions[req.method];
-  action ? action(req, res) : utils.send404(res);
-};
