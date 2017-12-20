@@ -47,7 +47,7 @@ var actions = {
       var parsedUrl = url.parse(req.url);
       var endPoint = parsedUrl.pathname === '/' ? '/index.html' : parsedUrl.pathname;
       if (endPoint === '/classes/messages') {
-        console.log('our data: ' + data);
+        // data.objectId = results.length;
         results.push(JSON.parse(data));
         utils.respond(res, results, 201);
       } else {
